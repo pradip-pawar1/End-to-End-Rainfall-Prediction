@@ -7,7 +7,9 @@ wheels/
 *.egg-info
 
 # Virtual environments
-# .venv
+.venv
 
 # weather rainfall prediction.csv
-# map.tldr
+map.tldr
+.ipynb_checkpoints
+.virtual_documents
