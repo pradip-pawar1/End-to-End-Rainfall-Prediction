@@ -1,27 +1,54 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field, field_validator
 import pickle
 import numpy as np
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 # Create FastAPI instance
-app = FastAPI(title="Rain Prediction API")
+app = FastAPI(
+    title="Rain Prediction API",
+    version="1.0.0",
+    description="ML API for predicting whether it will rain tomorrow."
+)
+
+model = None
+threshold = None
+
 
 # Get directory where main.py is located
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, "rain_model.pkl")
 
 # Load model and threshold once at startup
-with open(model_path, "rb") as f:
-    package = pickle.load(f)
+@app.on_event("startup")
+def load_model():
+    global model, threshold
 
-model = package["model"]
-threshold = package["threshold"]
+    with open(model_path, "rb") as f:
+        package = pickle.load(f)
 
+    model = package["model"]
+    threshold = package["threshold"]
+
+EXPECTED_FEATURES = 21
 
 # Define expected input structure
 class RainInput(BaseModel):
-    features: list[float]
+    features: list[float] = Field(..., description="List of 21 weather features")
+
+    @field_validator("features")
+    def validate_length(cls, v):
+        if len(v) != EXPECTED_FEATURES:
+            raise ValueError(f"Exactly {EXPECTED_FEATURES} features required")
+        return v
+    
+class RainOutput(BaseModel):
+    probability: float
+    prediction: int
+    threshold_used: float
 
 
 # Health check route
@@ -29,21 +56,23 @@ class RainInput(BaseModel):
 def home():
     return {"message": "Rain Prediction API is running"}
 
-
 # Prediction route
-@app.post("/predict")
+@app.post("/predict", response_model=RainOutput)
 def predict(data: RainInput):
+    X = np.array(data.features).reshape(1, -1)
+    
     try:
-        X = np.array(data.features).reshape(1, -1)
 
-        probs = model.predict_proba(X)[:, 1]
+        probs = model.predict_proba(X)[:, 1][0]
         prediction = int(probs >= threshold)
+        logging.info(f"Prediction made. Probability={probs}")
 
-        return {
-            "probability": float(probs),
-            "prediction": prediction,
-            "threshold_used": threshold
-        }
 
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    return {
+        "probability": round(float(probs), 4),
+        "prediction": prediction,
+        "threshold_used": threshold
+    }
