@@ -9,3 +9,5 @@ uvicorn
 pydantic 
 numpy 
 xgboost
+streamlit
+requests
