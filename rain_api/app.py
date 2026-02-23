@@ -30,10 +30,10 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             rainfall = st.number_input("Rainfall", value=1.0, step=.5)
-            evaporation = st.number_input("Evaporation", value=5.0)
+            evaporation = st.number_input("Evaporation", value=5.0, step=.5)
 
         with col2:
-            sunshine = st.number_input("Sunshine", value=8.0)
+            sunshine = st.number_input("Sunshine", value=8.0, step=.5)
             month = st.selectbox("Month",options=list(range(1, 13)))
 
 
@@ -46,24 +46,22 @@ def main():
             wind_speed_3pm = st.number_input("Wind Speed 3pm", value=15.0, step=.5)
 
         with col2:
-            wind_gust_speed = st.number_input("Wind Gust Speed", value=30.0)
-            wind_gust_dir = st.number_input("Wind Gust Dir Angle", value=200.0,)
+            wind_gust_speed = st.number_input("Wind Gust Speed", value=30.0, step=.5)
+            wind_gust_dir = st.number_input("Wind Gust Dir Angle", value=200.0, step=.5)
 
         with col3:
             wind_dir_9am = st.slider("Wind Dir 9am Angle", 0, 360, 120, 1)
             wind_dir_3pm = st.slider("Wind Dir 3pm Angle", 0, 360, 120, 1)
-            # wind_dir_9am = st.number_input("Wind Dir 9am Angle", value=120, step=1)
-            # wind_dir_3pm = st.number_input("Wind Dir 3pm Angle", value=150, step=1)
 
         # Header 4
         st.subheader("Pressure")
 
         col1, col2 = st.columns(2)
         with col1:
-            pressure_9am = st.number_input("Pressure 9am", value=1015.0)
+            pressure_9am = st.number_input("Pressure 9am", value=1015.0, step=.5)
 
         with col2:
-            pressure_3pm = st.number_input("Pressure 3pm", value=1012.0, step=0.5)
+            pressure_3pm = st.number_input("Pressure 3pm", value=1012.0, step=.5)
 
             
             
@@ -73,11 +71,9 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             cloud_9am = st.slider("Cloud 9am", 0, 10, 5, 1)
-            # cloud_9am = st.number_input("Cloud 9am", value=5.0)
 
         with col2:
             cloud_3pm = st.slider("Cloud 3pm", 0, 10, 5, 1)
-            # cloud_3pm = st.number_input("Cloud 3pm", value=2.0)
 
         # Header 6
         st.subheader("Other")
@@ -108,14 +104,29 @@ def main():
         cloud_mean = (cloud_9am + cloud_3pm) / 2
         cloud_diff = abs(cloud_9am - cloud_3pm)
 
-        features = [
-            min_temp, max_temp, rainfall, evaporation, sunshine,
-            wind_gust_speed, pressure_mean, pressure_diff,
-            wind_speed_mean, wind_speed_diff, humidity_mean, humidity_diff,
-            cloud_mean, cloud_diff, temp_range, temp_diff, month,
-            wind_dir_9am, wind_dir_3pm, wind_gust_dir,
-            climate_zone
-        ]
+        features = {
+            'MinTemp': min_temp,
+            'MaxTemp': max_temp,
+            'Rainfall': rainfall,
+            'Evaporation': evaporation,
+            'Sunshine': sunshine,
+            'WindGustSpeed': wind_gust_speed,
+            'Pressure_mean': pressure_mean, 
+            'Pressure_diff': pressure_diff,
+            'WindSpeed_mean':wind_speed_mean,
+            'WindSpeed_diff': wind_speed_diff,
+            'Humidity_mean': humidity_mean,
+            'Humidity_diff': humidity_diff,
+            'Cloud_mean': cloud_mean,
+            'Cloud_diff': cloud_diff,
+            'Temp_range': temp_range,
+            'Temp_diff': temp_diff,
+            'Month': month,
+            'WindDir9am_angle': wind_dir_9am,
+            'WindDir3pm_angle': wind_dir_3pm,
+            'WindGustDir_angle': wind_gust_dir,
+            'ClimateZone': climate_zone
+        }
 
         response = requests.post(API_URL, json={"features": features})
 

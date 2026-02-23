@@ -10,7 +10,8 @@ wheels/
 .venv
 
 # weather rainfall prediction.csv
-# map.tldr
 
 .ipynb_checkpoints
 .virtual_documents
+
+rain_api/try.py
