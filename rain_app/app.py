@@ -17,8 +17,8 @@ def main():
 
         col1, col2 = st.columns(2)
         with col1:
-            min_temp = st.number_input("Min Temp", value=15.0, step=0.25) # remain same
-            max_temp = st.number_input("Max Temp", value=25.0, step=0.25) # remain same
+            min_temp = st.number_input("Min Temp", value=15.0, step=0.25)
+            max_temp = st.number_input("Max Temp", value=25.0, step=0.25)
             
         with col2:
             humidity_9am = st.number_input("Humidity 9am", value=60.0, step=0.25)

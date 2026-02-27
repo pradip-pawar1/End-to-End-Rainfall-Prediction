@@ -21,7 +21,7 @@ feature_names = None
 
 # Path to model
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(BASE_DIR, "rain_model_3.pkl")
+model_path = os.path.join(BASE_DIR, "model.pkl")
 
 
 # Load model at startup
