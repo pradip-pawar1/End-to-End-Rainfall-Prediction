@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import math
 
+# API_URL = "https://rain-prediction-api.onrender.com/predict"
 API_URL = "https://rain-prediction-api.onrender.com/predict"
 
 st.set_page_config(page_title="Rain Prediction App", layout="wide")
@@ -132,19 +133,20 @@ def main():
 
         if response.status_code == 200:
             result = response.json()
-            prob = result["probability"]
+            # prob = result["probability"]
+            prob = round(result["probability"] * 100, 2)
             prediction = result["prediction"]
 
             st.subheader("Prediction Result")
 
             if prediction == 1:
-                st.error(f"Rain Expected Tomorrow\nProbability: {prob}")
+                st.error(f"Rain Expected Tomorrow\nProbability: {prob}%")
             else:
-                st.success(f"No Rain Expected\nProbability: {prob}")
+                st.success(f"No Rain Expected\nProbability: {prob}%")
 
         else:
-            st.error("API Error. Make sure FastAPI server is running.")
-            # st.error(f"API Error: {response.status_code} - {response.text}")
+            # st.error("API Error. Make sure FastAPI server is running.")
+            st.error(f"API Error: {response.status_code} - {response.text}")
 
 
 main()
