@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import math
 
-API_URL = "http://127.0.0.1:8000/predict"
+API_URL = "https://rain-prediction-api.onrender.com/predict"
 
 st.set_page_config(page_title="Rain Prediction App", layout="wide")
 
@@ -128,7 +128,7 @@ def main():
             'ClimateZone': climate_zone
         }
 
-        response = requests.post(API_URL, json={"features": features})
+        response = requests.post(API_URL, json={"features": features}, timeout=60)
 
         if response.status_code == 200:
             result = response.json()
@@ -144,6 +144,7 @@ def main():
 
         else:
             st.error("API Error. Make sure FastAPI server is running.")
+            # st.error(f"API Error: {response.status_code} - {response.text}")
 
 
 main()
