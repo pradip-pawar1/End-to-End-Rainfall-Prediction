@@ -1,43 +1,25 @@
-# Rain Prediction ML System
-
+![Heading](assets/Main%20banner.jpeg)
 > An end-to-end, production-ready machine learning system that predicts rainfall for the next day using structured weather observations — built with engineering discipline, not just model accuracy.
 
 ---
+
+## Try now! Links
+1. App: https://rainfall-prediction-app1.streamlit.app 
+2. API: https://rain-prediction-api.onrender.com
+
 
 ## What This Project Actually Is
 
 Most ML projects stop at a Jupyter notebook. This one does not.
 
-This system takes a trained XGBoost model and wraps it inside a proper software architecture — a validated REST API, a clean interactive frontend, a preprocessing pipeline, and a deployment-ready structure. Every component has a defined responsibility. Every input is validated. Every prediction is controlled.
+This system takes a trained XGBoost model and wraps it inside a proper software architecture — a validated REST API, a clean interactive frontend, a preprocessing pipeline, and a deployment-ready structure. Every component has a defined responsibility. **_Every input is validated. Every prediction is controlled._**
 
 This is the difference between a data science exercise and an ML engineering project.
 
 ---
 
 ## System Architecture
-
-```
-User Input (Streamlit UI)
-        |
-        v
-  HTTP POST Request
-        |
-        v
-FastAPI Backend (/predict)
-        |
-        ├── Pydantic Input Validation (schema enforcement)
-        ├── Feature Order Control (prevents silent corruption)
-        ├── Sklearn Pipeline (imputation + scaling)
-        |
-        v
-XGBoost Classifier
-        |
-        v
-Probability Score → Custom Threshold → Final Prediction
-        |
-        v
-Structured JSON Response → UI Display
-```
+![System Architecture](assets/System%20Architecture%20Diagram.png)
 
 ---
 
@@ -60,7 +42,7 @@ Structured JSON Response → UI Display
 The model package stores feature names alongside the model. At inference time, the API reorders input features to match the exact training order. This eliminates silent prediction corruption — a real bug that breaks systems in production when feature order shifts.
 
 **Custom Probability Threshold**
-Instead of using the default 0.5 threshold, this system tunes and stores a custom threshold during training. This enables precision-recall tradeoff control — critical in real forecasting systems where the cost of false negatives differs from false positives.
+Instead of using the default 0.5 threshold, this system tunes and stores a **_custom threshold of 0.45_** during training. This enables precision-recall tradeoff control — critical in real forecasting systems where the cost of false negatives differs from false positives.
 
 **Sklearn Pipeline Encapsulation**
 Preprocessing is not done separately before inference. The entire preprocessing chain — imputation, scaling — lives inside the pipeline. The API applies identical transformations to incoming data as were applied during training. No data leakage risk. No inconsistency.
@@ -116,18 +98,15 @@ rain-prediction-system/
 Derived features were engineered to reduce noise from individual time-point readings and expose stronger signal to the model.
 
 ---
+## UI Interface
+![UI 1](assets/UI%201.png)
+![UI 1](assets/UI%202.png)
+<!-- ![UI 1](assets/UI%203.png) -->
 
 ## API Reference
 
-**Base URL:** `http://127.0.0.1:8000`
-
-### `GET /`
-Health check.
-
 **Response:**
-```json
-{"message": "Rain Prediction API is running"}
-```
+![Response](assets/API.png)
 
 ### `POST /predict`
 Returns prediction and probability for tomorrow's rainfall.
@@ -145,64 +124,9 @@ Returns prediction and probability for tomorrow's rainfall.
 ```
 
 **Response:**
-```json
-{
-  "probability": 0.7312,
-  "prediction": 1,
-  "threshold_used": 0.45
-}
-```
-
-**Validation:** Exactly 21 named features required. All values must be float. Missing or extra features return HTTP 400 with a clear error message.
-
----
-
-## How to Run
-
-### 1. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Start the FastAPI backend
-
-```bash
-uvicorn main:app --reload
-```
-
-API will be available at `http://127.0.0.1:8000`
-
-### 3. Start the Streamlit frontend
-
-```bash
-streamlit run app.py
-```
-
-Open `http://localhost:8501` in your browser.
-
----
-
-## Requirements
-
-```
-fastapi
-uvicorn
-streamlit
-scikit-learn
-xgboost
-numpy
-pydantic
-requests
-```
-
----
-
-## Why XGBoost
-
-XGBoost is the strongest general-purpose algorithm for structured tabular data. It handles non-linear feature interactions, is robust to outliers, and has been the winning algorithm in hundreds of real-world forecasting competitions and industry deployments.
-
-Using it inside a Sklearn-compatible pipeline demonstrates that model selection was deliberate, not default.
+![API Response](assets/API%20resposne%201.png)
+![UI Response](assets/API%20resposne%202.png)
+**Validation:** Exactly 21 named features required API will calculate other. All values must be float. Missing or extra features return HTTP 400 with a clear error message.
 
 ---
 
@@ -220,8 +144,8 @@ This project is evidence of the following engineering capabilities:
 
 ## Author
 
-**Pradip**
-Self-taught ML and Data Science Engineer
+**Pradip Pawar**
+ML and Data Science Engineer
 
 Building toward a future in AI/ML and Data Science through disciplined, sequential learning and real-world projects.
 

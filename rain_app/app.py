@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import math
 
-# API_URL = "https://rain-prediction-api.onrender.com/predict"
 API_URL = "https://rain-prediction-api.onrender.com/predict"
 
 st.set_page_config(page_title="Rain Prediction App", layout="wide")
