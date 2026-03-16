@@ -3,10 +3,13 @@ import streamlit as st
 st.set_page_config(page_title="About - Rainfall Prediction", layout="wide")
 
 st.title("About This Project")
+st.info(
+"End-to-end machine learning system predicting rainfall using "
+"XGBoost, FastAPI, and Streamlit."
+)
 st.markdown("---")
 
-
-# Section 1 - Problem Statement
+# Section 1 - Overview
 st.header("Overview")
 
 st.write("""
@@ -20,6 +23,9 @@ machine learning system — from feature engineering and model
 training to API deployment and lvjive user interaction.
 """)
 
+st.markdown("---")
+
+# Section 2 - Problem Statement
 st.header("Problem Statement")
 st.write("""
 Rainfall prediction is a critical challenge in meteorology and agriculture.
@@ -30,7 +36,7 @@ and machine learning to predict whether it will rain tomorrow.
 
 st.markdown("---")
 
-# Section 2 - Why This Project
+# Section 3 - Why This Project
 st.header("Why This Project")
 st.write("""
 Most machine learning projects stop at a Jupyter notebook.
@@ -41,17 +47,21 @@ The goal was not just to build a model but to build a system.
 
 st.markdown("---")
 
-# Section 3 - Dataset
+# Section 4 - Dataset
 st.header("Dataset")
 st.write("""
-The model was trained on Australian weather data containing daily observations
-from multiple weather stations. The dataset includes temperature, humidity,
-wind speed, pressure, cloud cover, and rainfall measurements.
+The model was trained on the Australian Weather dataset,
+containing daily observations from multiple weather stations.
+
+Each record includes measurements such as temperature,
+humidity, pressure, wind speed, cloud cover, and rainfall.
+These variables allow the model to learn patterns associated
+with rainfall events.
 """)
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric("Total Features", "21")
+    st.metric("Total Features", "21", delta= 'good', delta_color="off")
 with col2:
     st.metric("Feature Type", "Engineered")
 with col3:
@@ -59,12 +69,12 @@ with col3:
 
 st.markdown("---")
 
-# Section 4 - Feature Engineering
+# Section 5 - Feature Engineering
 st.header("Feature Engineering")
 st.write("""
 Raw weather data contains separate readings at 9am and 3pm for most measurements.
 Instead of treating these as independent features, meaningful derived features
-were engineered to expose stronger signal to the model.
+were engineered to capture more informative patterns for the model.
 """)
 
 col1, col2 = st.columns(2)
@@ -92,7 +102,7 @@ with col2:
 
 st.markdown("---")
 
-# Section 5 - System Architecture
+# Section 6 - System Architecture
 st.header("System Architecture")
 st.write("""
 The system is built with clear separation of concerns across three layers.
@@ -100,31 +110,20 @@ Each layer has a single responsibility and communicates through a defined interf
 """)
 
 st.code("""
-User Input (Streamlit UI)
-        |
-        v
-  HTTP POST Request
-        |
-        v
-FastAPI Backend (/predict)
-        |
-        ├── Pydantic Input Validation
-        ├── Feature Order Control
-        ├── Sklearn Pipeline (Imputation + Scaling)
-        |
-        v
-XGBoost Classifier
-        |
-        v
-Probability Score → Custom Threshold → Final Prediction
-        |
-        v
-Structured JSON Response → UI Display
+User
+ ↓
+Streamlit UI
+ ↓
+FastAPI API
+ ↓
+ML Pipeline
+ ↓
+XGBoost Model
 """, language="text")
 
 st.markdown("---")
 
-# Section 6 - Why XGBoost
+# Section 7 - Why XGBoost
 st.header("Why XGBoost")
 st.write("""
 XGBoost is a gradient boosted decision tree ensemble. It was chosen because
@@ -136,7 +135,7 @@ these reasons.
 
 st.markdown("---")
 
-# Section 7 - Production Decisions
+# Section 8 - Production Decisions
 st.header("Engineering Decisions")
 
 col1, col2 = st.columns(2)
@@ -158,17 +157,20 @@ with col2:
 
 st.markdown("---")
 
-# Section 8 - Author
+# Section 9 - Author
 st.header("Author")
 col1, col2 = st.columns(2)
 with col1:
     st.write("""
-    **Pradip**
-    Civil Engineering Student | Self-taught ML and Data Science Engineer
+    **Pradip Pawar**
 
-    Building toward a future in AI/ML and Data Science through disciplined,
-    sequential learning and real-world end-to-end projects.
+    Machine Learning developer focused on building production-ready
+    data science systems.
+
+    Passionate about transforming data into intelligent applications
+    through robust models, scalable APIs, and clean user interfaces.
     """)
+
 with col2:
     st.write("""
     **Links**
@@ -176,3 +178,5 @@ with col2:
     - API Docs: [rain-prediction-api.onrender.com/docs](https://rain-prediction-api.onrender.com/docs)
     - Live App: [rainfall-prediction-app1.streamlit.app](https://rainfall-prediction-app1.streamlit.app)
     """)
+
+st.caption("Built as part of a self-driven journey into applied machine learning.")

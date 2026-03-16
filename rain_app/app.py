@@ -80,6 +80,8 @@ def main():
         climate_zone = st.number_input("Climate Zone", value=1, step=1)
 
         submitted = st.form_submit_button("Predict")
+        st.caption("API takes time to respond as it loads the model and processes the input features. Please wait for 1 Min and try again if it shows API error.")
+
 
 
     if submitted:
