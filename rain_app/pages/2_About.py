@@ -1,17 +1,27 @@
 import streamlit as st
 
-st.set_page_config(page_title="About - Rainfall Prediction", layout="wide")
+st.markdown("""
+    <style>
+        [data-testid="stSidebarNav"] {
+            display: none;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+st.sidebar.title("Navigation")
+st.sidebar.page_link("app.py", label="Prediction")
+st.sidebar.page_link("pages/2_About.py", label="About")
+st.sidebar.page_link("pages/3_Model_Insights.py", label="Model Insights")
 
 st.title("About This Project")
 st.info(
-"End-to-end machine learning system predicting rainfall using "
-"XGBoost, FastAPI, and Streamlit."
+    "End-to-end machine learning system predicting rainfall using "
+    "XGBoost, FastAPI, and Streamlit."
 )
 st.markdown("---")
 
 # Section 1 - Overview
 st.header("Overview")
-
 st.write("""
 This application predicts whether it will rain tomorrow based on
 daily weather observations. The system uses an XGBoost machine
@@ -20,7 +30,7 @@ through a Streamlit web interface.
 
 The goal of the project is to demonstrate a complete end-to-end
 machine learning system — from feature engineering and model
-training to API deployment and lvjive user interaction.
+training to API deployment and live user interaction.
 """)
 
 st.markdown("---")
@@ -61,7 +71,7 @@ with rainfall events.
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric("Total Features", "21", delta= 'good', delta_color="off")
+    st.metric("Total Features", "21")
 with col2:
     st.metric("Feature Type", "Engineered")
 with col3:
@@ -79,8 +89,9 @@ were engineered to capture more informative patterns for the model.
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("Raw Inputs")
-    st.write("""
+    st.info("""
+    **Raw Inputs**
+
     - Temperature at min and max
     - Humidity at 9am and 3pm
     - Pressure at 9am and 3pm
@@ -90,8 +101,9 @@ with col1:
     """)
 
 with col2:
-    st.subheader("Derived Features")
-    st.write("""
+    st.success("""
+    **Derived Features**
+
     - Humidity mean and difference
     - Pressure mean and difference
     - Wind speed mean and difference
@@ -109,17 +121,17 @@ The system is built with clear separation of concerns across three layers.
 Each layer has a single responsibility and communicates through a defined interface.
 """)
 
-st.code("""
-User
- ↓
-Streamlit UI
- ↓
-FastAPI API
- ↓
-ML Pipeline
- ↓
-XGBoost Model
-""", language="text")
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1:
+    st.info("**User**\n\nEnters weather data through the Streamlit form interface.")
+with col2:
+    st.info("**Streamlit UI**\n\nCollects inputs, derives features, sends POST request to API.")
+with col3:
+    st.warning("**FastAPI Backend**\n\nValidates request schema and routes to the ML pipeline.")
+with col4:
+    st.warning("**ML Pipeline**\n\nApplies imputation and scaling before passing to model.")
+with col5:
+    st.success("**XGBoost Model**\n\nReturns probability and final prediction with custom threshold.")
 
 st.markdown("---")
 
@@ -135,21 +147,23 @@ these reasons.
 
 st.markdown("---")
 
-# Section 8 - Production Decisions
+# Section 8 - Engineering Decisions
 st.header("Engineering Decisions")
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("Custom Probability Threshold")
-    st.write("""
+    st.warning("""
+    **Custom Probability Threshold**
+
     Instead of using the default 0.5 threshold, a custom threshold was tuned
     during training to control the precision-recall tradeoff. This is critical
     in forecasting where the cost of missing rain differs from a false alarm.
     """)
 
 with col2:
-    st.subheader("Pipeline Encapsulation")
-    st.write("""
+    st.success("""
+    **Pipeline Encapsulation**
+
     Preprocessing lives inside the Sklearn pipeline alongside the model.
     This ensures identical transformations during training and inference,
     eliminating any risk of data leakage or inconsistency.
@@ -161,10 +175,10 @@ st.markdown("---")
 st.header("Author")
 col1, col2 = st.columns(2)
 with col1:
-    st.write("""
+    st.info("""
     **Pradip Pawar**
 
-    Machine Learning developer focused on building production-ready
+    Machine Learning developer, building production-ready
     data science systems.
 
     Passionate about transforming data into intelligent applications
@@ -172,8 +186,9 @@ with col1:
     """)
 
 with col2:
-    st.write("""
+    st.success("""
     **Links**
+
     - GitHub: [End-to-End-Rainfall-Prediction](https://github.com/pradip-pawar1/End-to-End-Rainfall-Prediction)
     - API Docs: [rain-prediction-api.onrender.com/docs](https://rain-prediction-api.onrender.com/docs)
     - Live App: [rainfall-prediction-app1.streamlit.app](https://rainfall-prediction-app1.streamlit.app)
